@@ -1,18 +1,17 @@
 {
     "manifest_version": 3,
-    "name": "audhio",
+    "name": "Audhio",
     "version": "1.0",
-    "description": "Text-to-speech extension using ElevenLabs API",
-    "content_scripts": [
-        {
-          "matches": ["<all_urls>"],
-          "js": ["content.js"],
-          "css": ["content.css"]
-        }
-    ],
-    "permissions": ["activeTab", "storage", "scripting"],
+    "description": "A text-to-speech app.",
+    "permissions": ["tabs", "activeTab", "scripting"],
+    "host_permissions": ["<all_urls>"],
     "action": {
-        "default_popup": "index.html"
+      "default_popup": "index.html"
     },
-    "host_permissions": ["<all_urls>"]
-}
+    "content_scripts": [
+    {
+    "matches": ["<all_urls>"],
+    "js": ["scripts/content.js"]
+    }
+]
+  }
