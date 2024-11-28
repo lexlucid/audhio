@@ -1,6 +1,7 @@
-// import { useState } from 'react'
 import { useEffect, useState } from 'react';
 import './App.css'
+import { generateSpeech } from './utils/elevenlabs';
+import { playAudio } from './utils/playAudio';
 
 declare const chrome: any;
 
@@ -36,6 +37,16 @@ function App() {
     console.log("Is chrome.scripting available?", chrome.scripting);
   }
   
+  const handleGenerateSpeech = async () => {
+    try {
+      const audioBlob = await generateSpeech("Hello, this is a test!"); // Replace with extracted text
+      playAudio(audioBlob); // Play the audio
+    } catch (error) {
+      console.error("Error generating speech:", error);
+      alert("Failed to generate speech. Please try again.");
+    }
+  };
+ 
 
   return (
     <div>
@@ -43,6 +54,7 @@ function App() {
       <button onClick={triggerTextExtraction}>Extract Text</button>
       <h2>Extracted Text</h2>
       <p>{extractedText || "No text extracted yet"}</p>
+      <button onClick={handleGenerateSpeech}>Generate Speech</button>
     </div>
   )
 }

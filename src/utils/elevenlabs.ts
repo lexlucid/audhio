@@ -1,30 +1,21 @@
-const ELEVENLABS_API_KEY = import.meta.env.ELEVENLABS_API_KEY
-const ELEVENLABS_URL = "https://api.elevenlabs.io/v1/text-to-speech";
+export const generateSpeech = async (text: string): Promise<Blob> => {
+  const { ElevenLabsClient } = await import("elevenlabs");
+  const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY as string;
 
-export async function generateSpeech(text: string, voiceId: string = "Rachel"): Promise<Blob> {
-  try {
-    const response = await fetch(`${ELEVENLABS_URL}/${voiceId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "xi-api-key": ELEVENLABS_API_KEY,
-      },
-      body: JSON.stringify({
-        text,
-        voice_settings: {
-          stability: 0.75,
-          similarity_boost: 0.75,
-        },
-      }),
-    });
+  const client = new ElevenLabsClient({
+    apiKey: ELEVENLABS_API_KEY,
+  });
 
-    if (!response.ok) {
-      throw new Error(`Failed to generate speech: ${response.statusText}`);
-    }
+  const audioStream = await client.generate({
+    voice: "Rachel",
+    model_id: "eleven_turbo_v2_5",
+    text,
+  });
 
-    return await response.blob(); // Return audio data as a blob
-  } catch (error) {
-    console.error("Error generating speech:", error);
-    throw error;
+  const chunks: Uint8Array[] = [];
+  for await (const chunk of audioStream) {
+    chunks.push(chunk);
   }
-}
+
+  return new Blob(chunks, { type: "audio/mpeg" });
+};

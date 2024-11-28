@@ -1,5 +1,4 @@
-
-const extractText = () => {
+const findText = () => {
   const walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_TEXT,
@@ -19,5 +18,5 @@ const extractText = () => {
     return texts.join(' ')
 }
 
-chrome.runtime.sendMessage({ action: "EXTRACT_TEXT", payload: extractText() })
+chrome.runtime.sendMessage({ action: "EXTRACT_TEXT", payload: findText() })
 console.log("Text extraction complete and sent.");
