@@ -74,7 +74,7 @@ export const processAndPlayAudio = async (text: string): Promise<void> => {
       // Play the audio chunk using the playAudio utility
       await new Promise<void>((resolve) => {
         const audio = playAudio(audioBlob);
-        audio.onended = resolve; // Wait for the audio to finish playing
+        audio.onended = () => resolve(); // Wait for the audio to finish playing
       });
     }
 

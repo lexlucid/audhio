@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 // import { generateSpeech } from './utils/elevenlabs';
-import { generateAudio } from "./utils/deepgram";
-import { playAudio } from './utils/playAudio';
+import { processAndPlayAudio } from './utils/deepgram';
 
 declare const chrome: any;
 
@@ -41,8 +40,7 @@ function App() {
   const handleGenerateSpeech = async () => {
     triggerTextExtraction()
     try {
-      const audioBlob = await generateAudio(extractedText);
-      playAudio(audioBlob); // Play the generated audio
+      await processAndPlayAudio(extractedText);
     } catch (error) {
       console.error("Error generating speech:", error);
       alert("Failed to generate speech. Please try again.");
