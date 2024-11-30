@@ -41,7 +41,7 @@ function App() {
   const handleGenerateSpeech = async () => {
     triggerTextExtraction()
     try {
-      const audioBlob = await generateAudio("Hello, how can I help you today?");
+      const audioBlob = await generateAudio(extractedText);
       playAudio(audioBlob); // Play the generated audio
     } catch (error) {
       console.error("Error generating speech:", error);

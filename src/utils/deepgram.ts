@@ -6,7 +6,9 @@ if (!DEEPGRAM_API_KEY) {
   throw new Error("Missing DEEPGRAM_API_KEY in environment variables");
 }
 
-const deepgram = createClient(DEEPGRAM_API_KEY);
+const deepgram = createClient("proxy", {
+  global: { fetch: { options: { proxy: { url: "http://localhost:8888" } } } },
+});
 
 export const generateAudio = async (text: string): Promise<Blob> => {
   try {
