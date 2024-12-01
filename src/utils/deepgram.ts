@@ -2,6 +2,7 @@ import { createClient } from "@deepgram/sdk";
 import { playAudio } from "./playAudio";
 
 const DEEPGRAM_API_KEY = import.meta.env.VITE_DEEPGRAM_API_KEY;
+let isPaused = false;
 
 if (!DEEPGRAM_API_KEY) {
   throw new Error("Missing DEEPGRAM_API_KEY in environment variables");
@@ -60,6 +61,7 @@ const getAudioBlobFromStream = async (stream: ReadableStream): Promise<Blob> => 
   return new Blob(chunks, { type: "audio/wav" });
 };
 
+// Process and play audio for the extracted text
 export const processAndPlayAudio = async (text: string): Promise<void> => {
   try {
     // Split the text into chunks by sentence
@@ -67,16 +69,23 @@ export const processAndPlayAudio = async (text: string): Promise<void> => {
 
     for (const chunk of chunks) {
       console.log("Processing chunk:", chunk);
-
+      if (isPaused) {
       // Generate audio for the current chunk
-      const audioBlob = await generateAudio(chunk);
+        const audioBlob = await generateAudio(chunk);
 
       // Play the audio chunk using the playAudio utility
-      await new Promise<void>((resolve) => {
-        const audio = playAudio(audioBlob);
-        audio.onended = () => resolve(); // Wait for the audio to finish playing
-      });
-    }
+        await new Promise<void>((resolve) => {
+          const checkResume = setInterval(() => {
+            if (!isPaused) {
+              clearInterval(checkResume);
+              resolve();
+            }
+          }, 100)
+
+          const audio = playAudio(audioBlob);
+          audio.onended = () => resolve(); // Wait for the audio to finish playing
+        });
+      }
 
     console.log("All chunks processed and played!");
   } catch (error) {

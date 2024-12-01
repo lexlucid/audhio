@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import './App.css'
-// import { generateSpeech } from './utils/elevenlabs';
+import { LucidePlay, LucidePause } from 'lucide-react';
 import { processAndPlayAudio } from './utils/deepgram';
+import './App.css'
 
 declare const chrome: any;
 
 function App() {
   const [extractedText, setExtractedText] = useState<string>("")
+  const [isplaying, setIsPlaying] = useState<boolean>(false)
 
   useEffect(() => {
     const handleMessage = (message: any) => {
@@ -47,6 +48,10 @@ function App() {
     }
   }
  
+  function handleIsPlaying() {
+    handleGenerateSpeech()
+    setIsPlaying(!isplaying)
+  }
 
   return (
     <div>
@@ -54,7 +59,9 @@ function App() {
       <button onClick={triggerTextExtraction}>Extract Text</button>
       <h2>Extracted Text</h2>
       <p>{extractedText || "No text extracted yet"}</p>
-      <button onClick={handleGenerateSpeech}>Generate Speech</button>
+      <button onClick={handleIsPlaying}>
+        {isplaying ? <LucidePause /> : <LucidePlay />}
+      </button>
     </div>
   )
 }

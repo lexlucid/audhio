@@ -13,6 +13,7 @@
     "@deepgram/sdk": "^3.9.0",
     "@google-cloud/text-to-speech": "^5.6.0",
     "elevenlabs": "^0.18.0",
+    "lucide-react": "^0.462.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
