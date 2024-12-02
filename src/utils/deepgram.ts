@@ -86,7 +86,7 @@ export const processAndPlayAudio = async (text: string): Promise<void> => {
           audio.onended = () => resolve(); // Wait for the audio to finish playing
         });
       }
-
+    } 
     console.log("All chunks processed and played!");
   } catch (error) {
     console.error("Error processing and playing audio:", error);
