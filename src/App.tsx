@@ -4,7 +4,6 @@ import { processAndPlayAudio } from './utils/deepgram';
 import './App.css'
 
 declare const chrome: any;
-
 function App() {
   const [extractedText, setExtractedText] = useState<string>("")
   const [isplaying, setIsPlaying] = useState<boolean>(false)
@@ -39,7 +38,6 @@ function App() {
   }
   
   const handleGenerateSpeech = async () => {
-    triggerTextExtraction()
     try {
       await processAndPlayAudio(extractedText);
     } catch (error) {
@@ -49,6 +47,10 @@ function App() {
   }
  
   function handleIsPlaying() {
+    if (!extractedText) {
+      triggerTextExtraction()
+      return
+    }
     handleGenerateSpeech()
     setIsPlaying(!isplaying)
   }
@@ -56,7 +58,6 @@ function App() {
   return (
     <div>
       <h1>Audhio</h1>
-      <button onClick={triggerTextExtraction}>Extract Text</button>
       <h2>Extracted Text</h2>
       <p>{extractedText || "No text extracted yet"}</p>
       <button onClick={handleIsPlaying}>
