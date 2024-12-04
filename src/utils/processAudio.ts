@@ -1,12 +1,13 @@
-const chunkTextBySentence = (text : string) : string[] => {
-    // Match sentence boundaries (., !, ? followed by space)
-    const sentenceRegex = /(?<=[.!?])\s+/g;
-    return text.split(sentenceRegex).map((sentence) => sentence.trim());
-  }
+import { generateAudio } from "./generateAudio";
+import { playAudio } from "./playAudio";
+
+
   
 
 export const processAndPlayAudio = async (text: string): Promise<void> => {
     try {
+      let isPaused = false;
+
       // Split the text into chunks by sentence
       const chunks = chunkTextBySentence(text);
   
@@ -35,3 +36,9 @@ export const processAndPlayAudio = async (text: string): Promise<void> => {
       console.error("Error processing and playing audio:", error);
     }
   };
+
+  const chunkTextBySentence = (text : string) : string[] => {
+    // Match sentence boundaries (., !, ? followed by space)
+    const sentenceRegex = /(?<=[.!?])\s+/g;
+    return text.split(sentenceRegex).map((sentence) => sentence.trim());
+  }

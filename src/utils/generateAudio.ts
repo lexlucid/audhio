@@ -1,8 +1,6 @@
 import { createClient } from "@deepgram/sdk";
-import { playAudio } from "./playAudio";
 
 const DEEPGRAM_API_KEY = import.meta.env.VITE_DEEPGRAM_API_KEY;
-let isPaused = false;
 
 if (!DEEPGRAM_API_KEY) {
   throw new Error("Missing DEEPGRAM_API_KEY in environment variables");

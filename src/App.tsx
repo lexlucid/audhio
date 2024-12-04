@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LucidePlay, LucidePause } from 'lucide-react';
-import { processAndPlayAudio } from './utils/deepgram';
+import { processAndPlayAudio } from './utils/processAudio';
 import './App.css'
 
 declare const chrome: any;
